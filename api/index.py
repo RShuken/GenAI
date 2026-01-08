@@ -5,10 +5,17 @@ THE GASLIGHTING WIKI DEBATES - Vercel Serverless API
 import os
 import json
 import random
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Response
 import anthropic
 
 app = Flask(__name__)
+
+# HTML template served at root
+HTML_TEMPLATE = open(os.path.join(os.path.dirname(__file__), '..', 'public', 'index.html')).read() if os.path.exists(os.path.join(os.path.dirname(__file__), '..', 'public', 'index.html')) else """<!DOCTYPE html><html><body><h1>Loading...</h1></body></html>"""
+
+@app.route('/')
+def index():
+    return Response(HTML_TEMPLATE, mimetype='text/html')
 
 # Initialize client - will use ANTHROPIC_API_KEY env var
 client = None

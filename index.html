@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Gaslighting Wiki Debates</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --accent-1: #ff6b6b;
+            --accent-2: #4ecdc4;
+            --accent-3: #ffe66d;
+            --accent-4: #a855f7;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --glow-1: rgba(255, 107, 107, 0.3);
+            --glow-2: rgba(78, 205, 196, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background:
+                radial-gradient(ellipse at 20% 80%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(78, 205, 196, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(255, 107, 107, 0.1) 0%, transparent 50%);
+            animation: bgPulse 10s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-4), var(--accent-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: logoGlow 3s ease-in-out infinite;
+        }
+
+        @media (min-width: 768px) {
+            .logo { font-size: 3.5rem; }
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+        }
+
+        .tagline {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-top: 10px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .warning-badge {
+            display: inline-block;
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid var(--accent-1);
+            color: var(--accent-1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 15px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 var(--glow-1); }
+            50% { box-shadow: 0 0 20px 5px var(--glow-1); }
+        }
+
+        .stage {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .stage.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        @media (min-width: 768px) {
+            .card { padding: 30px; }
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .wiki-topic-display {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(78, 205, 196, 0.2));
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .wiki-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .wiki-category {
+            color: var(--accent-3);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .wiki-teaser {
+            color: var(--text-secondary);
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        .wiki-article {
+            background: #1a1a24;
+            border-left: 4px solid var(--accent-4);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .wiki-article h3 {
+            color: var(--accent-2);
+            margin-bottom: 15px;
+        }
+
+        .wiki-article p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .key-facts {
+            background: rgba(255, 230, 109, 0.1);
+            border: 1px dashed var(--accent-3);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .key-facts h4 {
+            color: var(--accent-3);
+            margin-bottom: 10px;
+        }
+
+        .key-facts li {
+            color: var(--text-secondary);
+            margin: 8px 0;
+            padding-left: 10px;
+        }
+
+        .persona-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        @media (min-width: 600px) {
+            .persona-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .persona-card {
+            background: var(--bg-card);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .persona-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .persona-card.selected {
+            border-color: var(--accent-2);
+            box-shadow: 0 0 30px var(--glow-2);
+        }
+
+        .persona-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--accent-2);
+            color: var(--bg-dark);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .persona-avatar {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .persona-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .persona-style {
+            color: var(--accent-3);
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        .persona-tactics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .tactic-tag {
+            background: rgba(255,255,255,0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        @media (min-width: 600px) {
+            .btn { width: auto; }
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-4));
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px var(--glow-1);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        @media (min-width: 600px) {
+            .btn-group {
+                flex-direction: row;
+                justify-content: center;
+                gap: 15px;
+            }
+        }
+
+        .debate-arena {
+            min-height: 400px;
+        }
+
+        .debate-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .debate-header {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+
+        .debater-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .debater-avatar-large {
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .vs-badge {
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-4));
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .debate-topic-banner {
+            background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.3), transparent);
+            text-align: center;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .debate-topic-banner h3 {
+            font-size: 1.1rem;
+            color: var(--accent-3);
+        }
+
+        .debate-messages {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .debate-message {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            animation: messageIn 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes messageIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .message-avatar {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .message-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .message-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .message-speaker {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .message-position {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.1);
+            color: var(--text-secondary);
+        }
+
+        .message-text {
+            background: rgba(255,255,255,0.05);
+            padding: 12px;
+            border-radius: 12px;
+            border-left: 3px solid;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .status-message {
+            text-align: center;
+            padding: 15px;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-top-color: var(--accent-2);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .analysis-card {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(78, 205, 196, 0.1));
+            border: 1px solid var(--accent-4);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .analysis-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .analysis-header h2 {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--accent-3), var(--accent-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .winner-announcement {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .winner-label {
+            color: var(--accent-3);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .winner-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .score-display {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .score-label {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .best-moment {
+            background: rgba(255, 230, 109, 0.1);
+            border: 1px solid var(--accent-3);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .best-moment h4 {
+            color: var(--accent-3);
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .best-moment blockquote {
+            font-style: italic;
+            color: var(--text-secondary);
+            padding-left: 15px;
+            border-left: 3px solid var(--accent-3);
+        }
+
+        .techniques-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        @media (min-width: 768px) {
+            .techniques-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .technique-card {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 12px;
+        }
+
+        .technique-card h4 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .technique-list {
+            list-style: none;
+        }
+
+        .technique-list li {
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .technique-list li:last-child {
+            border-bottom: none;
+        }
+
+        .audience-warning {
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid var(--accent-1);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .audience-warning h4 {
+            color: var(--accent-1);
+            margin-bottom: 10px;
+        }
+
+        .key-takeaway {
+            background: linear-gradient(135deg, var(--accent-2), var(--accent-4));
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .rounds-control {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .rounds-control label {
+            color: var(--text-secondary);
+        }
+
+        .rounds-control input {
+            width: 70px;
+            padding: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: var(--bg-card);
+            color: white;
+            border-radius: 8px;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-card);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-4);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="container">
+        <header>
+            <h1 class="logo">The Gaslighting Wiki Debates</h1>
+            <p class="tagline">// Two AIs argue about things that don't exist</p>
+            <div class="warning-badge">⚠️ NOTHING HERE IS REAL ⚠️</div>
+        </header>
+
+        <!-- Stage 1: Generate Wiki Topic -->
+        <div id="stage-topic" class="stage active">
+            <div class="card">
+                <h2 class="card-title">📚 Step 1: Generate a Fake Wiki Topic</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                    First, let's create something completely fictional for our debaters to argue about.
+                </p>
+
+                <div id="topic-display" class="wiki-topic-display" style="display: none;">
+                    <div class="wiki-category" id="topic-category"></div>
+                    <h3 class="wiki-title" id="topic-title"></h3>
+                    <p class="wiki-teaser" id="topic-teaser"></p>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" id="btn-generate-topic">
+                        🎲 Generate Random Topic
+                    </button>
+                    <button class="btn btn-secondary" id="btn-generate-article" style="display: none;">
+                        📖 Generate Full Article →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stage 2: View Article & Select Debaters -->
+        <div id="stage-setup" class="stage">
+            <div class="card">
+                <h2 class="card-title">📖 The Wiki Article</h2>
+                <div id="article-display" class="wiki-article"></div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">🎭 Step 2: Choose Your Debaters</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 10px;">
+                    Select TWO personas to debate. Each has unique gaslighting tactics.
+                </p>
+                <div id="persona-grid" class="persona-grid"></div>
+
+                <div class="rounds-control">
+                    <label for="rounds-input">Rounds:</label>
+                    <input type="number" id="rounds-input" min="1" max="5" value="2">
+                    <span style="color: var(--text-secondary); font-size: 0.9rem;">(more = more chaos)</span>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" id="btn-back-topic">← New Topic</button>
+                    <button class="btn btn-primary" id="btn-start-debate" disabled>
+                        ⚔️ Start Debate
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stage 3: Live Debate -->
+        <div id="stage-debate" class="stage">
+            <div class="card debate-arena">
+                <div class="debate-header">
+                    <div class="debater-info" id="debater1-info">
+                        <div class="debater-avatar-large" id="debater1-avatar"></div>
+                        <div>
+                            <div id="debater1-name"></div>
+                            <div id="debater1-style" style="color: var(--text-secondary); font-size: 0.85rem;"></div>
+                        </div>
+                    </div>
+                    <div class="vs-badge">VS</div>
+                    <div class="debater-info" id="debater2-info">
+                        <div class="debater-avatar-large" id="debater2-avatar"></div>
+                        <div>
+                            <div id="debater2-name"></div>
+                            <div id="debater2-style" style="color: var(--text-secondary); font-size: 0.85rem;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="debate-topic-banner">
+                    <h3>Debating: <span id="debate-topic-title"></span></h3>
+                </div>
+
+                <div id="debate-messages" class="debate-messages"></div>
+            </div>
+
+            <div id="analysis-container"></div>
+
+            <div class="btn-group" id="post-debate-buttons" style="display: none;">
+                <button class="btn btn-secondary" id="btn-new-debate">🔄 New Debate</button>
+                <button class="btn btn-primary" id="btn-new-topic">🎲 New Topic</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let currentTopic = null;
+        let currentArticle = null;
+        let selectedPersonas = [];
+        let personas = {};
+
+        const stages = {
+            topic: document.getElementById('stage-topic'),
+            setup: document.getElementById('stage-setup'),
+            debate: document.getElementById('stage-debate')
+        };
+
+        function showStage(stageName) {
+            Object.values(stages).forEach(s => s.classList.remove('active'));
+            stages[stageName].classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        async function loadPersonas() {
+            try {
+                const response = await fetch('/api/personas');
+                personas = await response.json();
+                renderPersonaGrid();
+            } catch (e) {
+                console.error('Failed to load personas:', e);
+            }
+        }
+
+        function renderPersonaGrid() {
+            const grid = document.getElementById('persona-grid');
+            grid.innerHTML = Object.entries(personas).map(([key, p]) => `
+                <div class="persona-card" data-key="${key}">
+                    <div class="persona-avatar">${p.avatar}</div>
+                    <div class="persona-name">${p.name}</div>
+                    <div class="persona-style">${p.style}</div>
+                    <div class="persona-tactics">
+                        ${p.tactics.map(t => `<span class="tactic-tag">${t}</span>`).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            grid.querySelectorAll('.persona-card').forEach(card => {
+                card.addEventListener('click', () => togglePersonaSelection(card));
+            });
+        }
+
+        function togglePersonaSelection(card) {
+            const key = card.dataset.key;
+
+            if (card.classList.contains('selected')) {
+                card.classList.remove('selected');
+                selectedPersonas = selectedPersonas.filter(k => k !== key);
+            } else if (selectedPersonas.length < 2) {
+                card.classList.add('selected');
+                selectedPersonas.push(key);
+            }
+
+            document.getElementById('btn-start-debate').disabled = selectedPersonas.length !== 2;
+        }
+
+        async function generateTopic() {
+            const btn = document.getElementById('btn-generate-topic');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Generating...';
+
+            try {
+                const response = await fetch('/api/generate-topic');
+                currentTopic = await response.json();
+
+                document.getElementById('topic-category').textContent = currentTopic.category;
+                document.getElementById('topic-title').textContent = currentTopic.title;
+                document.getElementById('topic-teaser').textContent = currentTopic.teaser;
+                document.getElementById('topic-display').style.display = 'block';
+                document.getElementById('btn-generate-article').style.display = 'inline-flex';
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = '🎲 Generate Random Topic';
+        }
+
+        async function generateArticle() {
+            const btn = document.getElementById('btn-generate-article');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Writing...';
+
+            try {
+                const response = await fetch('/api/generate-article', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title: currentTopic.title })
+                });
+                currentArticle = await response.json();
+
+                const articleDisplay = document.getElementById('article-display');
+                articleDisplay.innerHTML = `
+                    <h3>${currentArticle.title}</h3>
+                    ${currentArticle.content.split('\n').filter(p => p.trim()).map(p => `<p>${p}</p>`).join('')}
+                    <div class="key-facts">
+                        <h4>⚡ Debatable "Facts"</h4>
+                        <ul>
+                            ${(currentArticle.key_facts || []).map(f => `<li>• ${f}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+
+                showStage('setup');
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = '📖 Generate Full Article →';
+        }
+
+        async function startDebate() {
+            const rounds = parseInt(document.getElementById('rounds-input').value) || 2;
+            const d1 = personas[selectedPersonas[0]];
+            const d2 = personas[selectedPersonas[1]];
+
+            // Setup UI
+            document.getElementById('debater1-avatar').textContent = d1.avatar;
+            document.getElementById('debater1-name').textContent = d1.name;
+            document.getElementById('debater1-style').textContent = d1.style;
+            document.getElementById('debater2-avatar').textContent = d2.avatar;
+            document.getElementById('debater2-name').textContent = d2.name;
+            document.getElementById('debater2-style').textContent = d2.style;
+            document.getElementById('debate-topic-title').textContent = currentArticle.title;
+
+            const messagesContainer = document.getElementById('debate-messages');
+            messagesContainer.innerHTML = '';
+            document.getElementById('analysis-container').innerHTML = '';
+            document.getElementById('post-debate-buttons').style.display = 'none';
+
+            showStage('debate');
+
+            const positions = [
+                "DEFENDING the mainstream interpretation",
+                "ARGUING the hidden truth has been suppressed"
+            ];
+            if (Math.random() > 0.5) positions.reverse();
+
+            const debaters = [
+                { key: selectedPersonas[0], info: d1, position: positions[0] },
+                { key: selectedPersonas[1], info: d2, position: positions[1] }
+            ];
+
+            const debateHistory = [];
+
+            // Helper to add message
+            function addMessage(speaker, avatar, color, text, position = null) {
+                const msg = document.createElement('div');
+                msg.className = 'debate-message';
+                msg.innerHTML = `
+                    <div class="message-avatar">${avatar}</div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="message-speaker" style="color: ${color}">${speaker}</span>
+                            ${position ? `<span class="message-position">${position}</span>` : ''}
+                        </div>
+                        <div class="message-text" style="border-color: ${color}">${text}</div>
+                    </div>
+                `;
+                messagesContainer.appendChild(msg);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+
+            function addStatus(text) {
+                const status = document.createElement('div');
+                status.className = 'status-message';
+                status.id = 'current-status';
+                status.innerHTML = `<span class="spinner"></span> ${text}`;
+                messagesContainer.appendChild(status);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+
+            function removeStatus() {
+                const status = document.getElementById('current-status');
+                if (status) status.remove();
+            }
+
+            // Opening statements
+            for (let i = 0; i < 2; i++) {
+                const d = debaters[i];
+                addStatus(`${d.info.name} preparing opening...`);
+
+                const res = await fetch('/api/debate-turn', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        debater_key: d.key,
+                        topic: currentArticle.title,
+                        article: currentArticle,
+                        position: d.position,
+                        is_opening: true,
+                        opponent_name: debaters[1 - i].info.name
+                    })
+                });
+                const data = await res.json();
+                removeStatus();
+
+                debateHistory.push({ speaker: d.info.name, text: data.response });
+                addMessage(d.info.name, d.info.avatar, d.info.color, data.response, d.position);
+            }
+
+            // Debate rounds
+            for (let round = 0; round < rounds; round++) {
+                for (let i = 0; i < 2; i++) {
+                    const d = debaters[i];
+                    const opponent = debaters[1 - i];
+
+                    addStatus(`${d.info.name} crafting rebuttal...`);
+
+                    const res = await fetch('/api/debate-turn', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            debater_key: d.key,
+                            topic: currentArticle.title,
+                            article: currentArticle,
+                            position: d.position,
+                            opponent_statement: debateHistory[debateHistory.length - 1].text,
+                            debate_history: debateHistory,
+                            is_opening: false
+                        })
+                    });
+                    const data = await res.json();
+                    removeStatus();
+
+                    debateHistory.push({ speaker: d.info.name, text: data.response });
+                    addMessage(d.info.name, d.info.avatar, d.info.color, data.response);
+                }
+            }
+
+            // Analysis
+            addStatus('Analyzing the carnage...');
+
+            const analysisRes = await fetch('/api/analyze-debate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ debate_history: debateHistory })
+            });
+            const analysis = await analysisRes.json();
+            removeStatus();
+
+            renderAnalysis(analysis);
+            document.getElementById('post-debate-buttons').style.display = 'flex';
+        }
+
+        function renderAnalysis(analysis) {
+            const container = document.getElementById('analysis-container');
+            container.innerHTML = `
+                <div class="analysis-card">
+                    <div class="analysis-header">
+                        <h2>🔍 POST-DEBATE ANALYSIS</h2>
+                    </div>
+
+                    <div class="winner-announcement">
+                        <div class="winner-label">👑 Master Gaslighter</div>
+                        <div class="winner-name">${analysis.winner || 'Unknown'}</div>
+                        <div class="score-display">
+                            <div class="score-item">
+                                <div class="score-value" style="color: var(--accent-2)">${analysis.winner_score || '??'}</div>
+                                <div class="score-label">Winner</div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-value" style="color: var(--accent-1)">${analysis.loser_score || '??'}</div>
+                                <div class="score-label">Runner-up</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="best-moment">
+                        <h4>🏆 Best Gaslight Moment</h4>
+                        <p style="color: var(--text-secondary); margin-bottom: 8px; font-size: 0.9rem;">by ${analysis.best_gaslight_speaker || 'Unknown'}</p>
+                        <blockquote>"${analysis.best_gaslight_moment || 'N/A'}"</blockquote>
+                    </div>
+
+                    ${Object.keys(analysis.techniques_used || {}).length > 0 ? `
+                    <div class="techniques-grid">
+                        ${Object.entries(analysis.techniques_used || {}).map(([speaker, techniques]) => `
+                            <div class="technique-card">
+                                <h4><span style="color: var(--accent-4)">🎭</span> ${speaker}</h4>
+                                <ul class="technique-list">
+                                    ${(techniques || []).map(t => `<li>• ${t}</li>`).join('')}
+                                </ul>
+                            </div>
+                        `).join('')}
+                    </div>
+                    ` : ''}
+
+                    <div class="audience-warning">
+                        <h4>⚠️ AUDIENCE WARNING</h4>
+                        <p>${analysis.audience_warning || 'Everything you just read was completely made up.'}</p>
+                    </div>
+
+                    <div class="key-takeaway">
+                        💡 ${analysis.key_takeaway || 'Two AIs argued about nothing. Nobody won.'}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Event Listeners
+        document.getElementById('btn-generate-topic').addEventListener('click', generateTopic);
+        document.getElementById('btn-generate-article').addEventListener('click', generateArticle);
+        document.getElementById('btn-start-debate').addEventListener('click', startDebate);
+
+        document.getElementById('btn-back-topic').addEventListener('click', () => {
+            showStage('topic');
+            selectedPersonas = [];
+            document.querySelectorAll('.persona-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('btn-start-debate').disabled = true;
+        });
+
+        document.getElementById('btn-new-debate').addEventListener('click', () => {
+            selectedPersonas = [];
+            document.querySelectorAll('.persona-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('btn-start-debate').disabled = true;
+            showStage('setup');
+        });
+
+        document.getElementById('btn-new-topic').addEventListener('click', () => {
+            currentTopic = null;
+            currentArticle = null;
+            selectedPersonas = [];
+            document.getElementById('topic-display').style.display = 'none';
+            document.getElementById('btn-generate-article').style.display = 'none';
+            showStage('topic');
+        });
+
+        // Initialize
+        loadPersonas();
+    </script>
+</body>
+</html>
